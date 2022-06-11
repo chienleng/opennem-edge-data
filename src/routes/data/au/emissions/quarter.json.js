@@ -12,7 +12,8 @@ export async function get() {
 		// @ts-ignore
 		body: parsed.data,
 		headers: {
-			'Access-Control-Allow-Origin': '*'
+			'Access-Control-Allow-Origin': '*',
+			'Cache-Control': 'max-age=0'
 		}
 	};
 }
