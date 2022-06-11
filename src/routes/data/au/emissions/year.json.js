@@ -14,6 +14,9 @@ export async function get() {
 
 	return {
 		// @ts-ignore
-		body: { data: parsed }
+		body: { data: parsed.data },
+		headers: {
+			'Access-Control-Allow-Origin': '*'
+		}
 	};
 }
