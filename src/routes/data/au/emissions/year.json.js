@@ -6,14 +6,13 @@ export async function get() {
 	);
 
 	const csv = await response.text();
-	console.log(csv);
-
 	const parsed = Papa.parse(csv, { header: true });
-
-	console.log('here', parsed.data);
 
 	return {
 		// @ts-ignore
-		body: parsed.data
+		body: parsed.data,
+		headers: {
+			'Access-Control-Allow-Origin': '*'
+		}
 	};
 }
