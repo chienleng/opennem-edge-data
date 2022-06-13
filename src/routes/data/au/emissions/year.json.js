@@ -1,18 +1,21 @@
 import Papa from 'papaparse';
 
 export async function get() {
-	const response = await fetch(
-		'https://raw.githubusercontent.com/opennem/emissions-csv/main/data/au-2021-emissions-projections-fig-7.csv'
-	);
-
-	const csv = await response.text();
+	const dataUrl = import.meta.env.VITE_DATA_URL;
+	const metaResponse = await fetch(`${dataUrl}/data/au/emissions/year-meta.json`);
+	const meta = await metaResponse.json();
+	const dataResponse = await fetch(`${dataUrl}${meta.path}`);
+	const csv = await dataResponse.text();
 	const parsed = Papa.parse(csv, { header: true });
 
 	return {
-		// @ts-ignore
-		body: parsed.data,
+		body: {
+			...meta,
+			data: parsed.data
+		},
 		headers: {
-			'Access-Control-Allow-Origin': '*'
+			'Access-Control-Allow-Origin': '*',
+			'Cache-Control': 'max-age=0, must-revalidate'
 		}
 	};
 }
